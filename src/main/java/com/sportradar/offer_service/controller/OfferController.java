@@ -1,9 +1,10 @@
-
 package com.sportradar.offer_service.controller;
 
+import com.sportradar.offer_service.dto.OfferResponse;
 import com.sportradar.offer_service.model.Event;
 import com.sportradar.offer_service.model.Market;
 import com.sportradar.offer_service.service.OfferService;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -17,6 +18,11 @@ public class OfferController {
 
     public OfferController(OfferService offerService) {
         this.offerService = offerService;
+    }
+
+    @GetMapping
+    public OfferResponse getOffer() {
+        return offerService.getOffer();
     }
 
     @GetMapping("/events")
