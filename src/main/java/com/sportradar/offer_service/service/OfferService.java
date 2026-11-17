@@ -17,9 +17,9 @@ import com.sportradar.offer_service.model.Market;
 import com.sportradar.offer_service.model.Outcome;
 
 import com.sportradar.offer_service.repository.InMemoryOfferRepository;
-
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -51,6 +51,14 @@ public class OfferService {
                 .filter(event -> event.getStatus() == 1)
                 .filter(event -> event.getStartsAt() != null)
                 .filter(event -> event.getStartsAt().isAfter(now))
+                .toList();
+    }
+
+    public List<Event> getUpcomingEvents(LocalDate startDate) {
+        return getUpcomingEvents()
+                .stream()
+                .filter(event -> startDate == null
+                        || event.getStartsAt().toLocalDate().equals(startDate))
                 .toList();
     }
 

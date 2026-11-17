@@ -1,3 +1,4 @@
+
 package com.sportradar.offer_service.config;
 
 import org.apache.kafka.clients.admin.NewTopic;
@@ -19,6 +20,22 @@ public class KafkaConfig {
     @Bean
     public NewTopic eventTopic() {
         return TopicBuilder.name("event")
+                .partitions(2)
+                .replicas(1)
+                .build();
+    }
+
+    @Bean
+    public NewTopic marketDeadLetterTopic() {
+        return TopicBuilder.name("market.DLT")
+                .partitions(1)
+                .replicas(1)
+                .build();
+    }
+
+    @Bean
+    public NewTopic eventDeadLetterTopic() {
+        return TopicBuilder.name("event.DLT")
                 .partitions(2)
                 .replicas(1)
                 .build();

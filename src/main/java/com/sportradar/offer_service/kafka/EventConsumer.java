@@ -1,5 +1,3 @@
-
-
 package com.sportradar.offer_service.kafka;
 
 import com.fasterxml.jackson.databind.JsonNode;

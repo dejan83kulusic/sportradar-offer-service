@@ -9,6 +9,7 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 
@@ -20,10 +21,18 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@EmbeddedKafka(
+        partitions = 2,
+        topics = "event",
+        bootstrapServersProperty = "spring.kafka.bootstrap-servers"
+)
 class EventConsumerIntegrationTest {
 
     @Autowired
     private InMemoryOfferRepository repository;
+
+    @Value("${spring.kafka.bootstrap-servers}")
+    private String bootstrapServers;
 
     @Test
     void shouldConsumeEventMessageFromKafka() throws Exception {
@@ -64,14 +73,17 @@ class EventConsumerIntegrationTest {
         );
 
         Properties properties = new Properties();
+
         properties.put(
                 ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                "localhost:9092"
+                bootstrapServers
         );
+
         properties.put(
                 ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
                 StringSerializer.class.getName()
         );
+
         properties.put(
                 ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
                 StringSerializer.class.getName()
